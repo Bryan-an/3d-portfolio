@@ -1,5 +1,5 @@
 const Loader = () => {
-  return <div>Loader</div>;
+  return null;
 };
 
 export default Loader;

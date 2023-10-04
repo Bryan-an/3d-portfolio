@@ -25,6 +25,7 @@ const ServiceCard: React.FC<Props> = ({ index, title, icon }) => {
         className="w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card"
       >
         <div
+          // @ts-ignore
           options={{
             max: 45,
             scale: 1,

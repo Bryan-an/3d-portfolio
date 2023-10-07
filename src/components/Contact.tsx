@@ -19,9 +19,53 @@ const Contact = () => {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {};
+  ) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {};
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const {
+      VITE_EMAILJS_PUBLIC_KEY,
+      VITE_EMAILJS_TEMPLATE_ID,
+      VITE_EMAILJS_SERVICE_ID,
+      VITE_TO_EMAIL,
+      VITE_TO_NAME,
+    } = import.meta.env;
+
+    emailjs
+      .send(
+        VITE_EMAILJS_SERVICE_ID,
+        VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: form.name,
+          to_name: VITE_TO_NAME,
+          from_email: form.email,
+          to_email: VITE_TO_EMAIL,
+          message: form.message,
+        },
+        VITE_EMAILJS_PUBLIC_KEY
+      )
+      .then(() => {
+        alert('Thank you. I will get back to you as soon as possible.');
+
+        setForm({
+          name: '',
+          email: '',
+          message: '',
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('Something went wrong.');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
